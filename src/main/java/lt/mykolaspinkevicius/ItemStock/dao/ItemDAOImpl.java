@@ -4,12 +4,14 @@ import lt.mykolaspinkevicius.ItemStock.entity.Item;
 import lt.mykolaspinkevicius.ItemStock.exceptions.NoItemFoundException;
 import lt.mykolaspinkevicius.ItemStock.jpa.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ItemDAOImpl implements Dao<Item> {
 
     @Autowired
