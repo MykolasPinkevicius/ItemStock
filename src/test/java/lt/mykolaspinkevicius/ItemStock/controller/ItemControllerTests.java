@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,9 +31,6 @@ public class ItemControllerTests {
     private String getRootUrl() {
         return "http://localhost:" + port + "/items";
     }
-
-    @Test
-    void contextLoads() {}
 
     @Test
     void shouldReturnAnyItemsWhenGettingThemAll() {
@@ -72,15 +70,30 @@ public class ItemControllerTests {
     @Test
     void ShouldDeleteItemWhenDeletingById() {
         postItem();
-        Optional<Item> getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Optional.class);
+        Item getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
         assertNotNull(getByIdResponse);
         restTemplate.delete(getRootUrl() + "/deleteItem?id=1");
         try{
-            getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Optional.class);
+            getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
         } catch(final HttpClientErrorException e) {
             assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @Test
+    void ShouldUpdateItem() {
+        postItem();
+        restTemplate.put(getRootUrl() + "/updateItem", updateCreatedItem(), Item.class);
+        Item item = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
+        assertEquals("Fake Fake Fake Gold", item.getType());
+    }
+
+    private Item updateCreatedItem() {
+        Item item = createItem();
+        item.setId(1L);
+        item.setType("Fake Fake Fake Gold");
+        return item;
     }
 
     private ResponseEntity<Item> postItem() {
