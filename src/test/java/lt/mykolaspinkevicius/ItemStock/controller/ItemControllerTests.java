@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = ItemStockApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,27 +36,56 @@ public class ItemControllerTests {
 
     @Test
     void shouldReturnAnyItemsWhenGettingThemAll() {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/getAllItems",
-                HttpMethod.GET, entity, String.class);
-        assertNotNull(response.getBody());
+        List response = restTemplate.getForObject(getRootUrl() + "/getAllItems", List.class);
+        assertNotNull(response);
     }
 
     @Test
     void shouldReturnItemWhenGettingById() {
-//        Need to insert something before we can test
-//        because currently database is in memory and after each application start it deletes temporary memory.
-        restTemplate.postForEntity(getRootUrl() + "/addItem", createItem(), Item.class);
-        Item item = restTemplate.getForObject(getRootUrl() + "/getItemById/1", Item.class);
-        assertNotNull(item);
+        postItem();
+        Optional<Item> item = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Optional.class);
+        assertNotNull(item.get());
     }
 
     @Test
     void shouldCreateItem() {
-        ResponseEntity<Item> postResponse = restTemplate.postForEntity(getRootUrl() + "/addItem", createItem(), Item.class);
+        ResponseEntity<Item> postResponse = postItem();
         assertNotNull(postResponse);
-        assertNotNull(postResponse.getBody());
+    }
+
+    @Test
+    void ShouldGetItemsWhenGettingWithValidItemDate() {
+        postItem();
+        List getResponse = restTemplate.getForObject(getRootUrl() + "/getItemsWithValidDate?"
+                + "date=" + LocalDate.now().format(DateTimeFormatter.ISO_DATE),List.class);
+        assertNotNull(getResponse);
+    }
+
+    @Test
+    void ShouldGetItemsWhenGettingWithTypeAndQuantity() {
+        postItem();
+        List getResponse = restTemplate.getForObject(getRootUrl() + "/getItemsWithProvidedAvailableQuantityAndType?"
+                + "type=Fake Gold" + "&" + "quantity=14", List.class);
+        assertNotNull(getResponse);
+    }
+
+    @Test
+    void ShouldDeleteItemWhenDeletingById() {
+        postItem();
+        Optional<Item> getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Optional.class);
+        assertNotNull(getByIdResponse);
+        restTemplate.delete(getRootUrl() + "/deleteItem?id=1");
+        try{
+            getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Optional.class);
+        } catch(final HttpClientErrorException e) {
+            assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    private ResponseEntity<Item> postItem() {
+        ResponseEntity<Item> postResponse = restTemplate.postForEntity(getRootUrl() + "/addItem", createItem(), Item.class);
+        return postResponse;
     }
 
     private Item createItem() {
