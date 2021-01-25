@@ -18,4 +18,6 @@ public interface Dao<T> {
     void update(T t);
 
     void delete(Long id);
+
+    List<T> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity);
 }

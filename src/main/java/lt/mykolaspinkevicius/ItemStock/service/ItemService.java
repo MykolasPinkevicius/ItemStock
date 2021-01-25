@@ -38,4 +38,8 @@ public class ItemService {
         itemDao.delete(id);
     }
 
+    public List<Item> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
+        return itemDao.getItemsWithProvidedAvailableQuantityAndType(type, quantity);
+    }
+
 }

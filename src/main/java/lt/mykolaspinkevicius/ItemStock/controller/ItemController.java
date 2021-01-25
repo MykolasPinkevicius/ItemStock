@@ -31,6 +31,11 @@ public class ItemController {
         return itemService.getItemsWithValidDate(date);
     }
 
+    @GetMapping("/getItemsWithProvidedAvailableQuantityAndType")
+    public List<Item> getItemsWithProvidedAvailableQuantityAndType(@RequestParam String type, @RequestParam Long quantity) {
+        return itemService.getItemsWithProvidedAvailableQuantityAndType(type, quantity);
+    }
+
     @PostMapping("/addItem")
     public void addItem(@RequestBody Item item) {
         itemService.save(item);
@@ -45,5 +50,6 @@ public class ItemController {
     public void deleteItem(@RequestParam Long id) {
         itemService.delete(id);
     }
+
 
 }
