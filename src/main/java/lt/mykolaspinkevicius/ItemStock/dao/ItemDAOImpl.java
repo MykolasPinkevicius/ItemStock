@@ -56,7 +56,7 @@ public class ItemDAOImpl implements Dao<Item> {
     @Override
     public List<Item> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
         return repository.findAll().stream()
-                .filter(x -> type.equals(x.getType()) && x.getQuantity() >= quantity).collect(Collectors.toList());
+                .filter(x -> type.equals(x.getType()) && x.getQuantity() <= quantity).collect(Collectors.toList());
     }
 
 }

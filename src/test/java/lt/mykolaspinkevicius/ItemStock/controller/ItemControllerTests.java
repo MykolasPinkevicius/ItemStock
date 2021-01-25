@@ -63,7 +63,7 @@ public class ItemControllerTests {
     void ShouldGetItemsWhenGettingWithTypeAndQuantity() {
         postItem();
         List getResponse = restTemplate.getForObject(getRootUrl() + "/getItemsWithProvidedAvailableQuantityAndType?"
-                + "type=Fake Gold" + "&" + "quantity=14", List.class);
+                + "type=Fake Gold" + "&" + "quantity=15", List.class);
         assertNotNull(getResponse);
     }
 
