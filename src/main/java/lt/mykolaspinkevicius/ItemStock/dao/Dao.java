@@ -2,6 +2,7 @@ package lt.mykolaspinkevicius.ItemStock.dao;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -10,7 +11,7 @@ public interface Dao<T> {
 
     List<T> getAll();
 
-    List<T> getAllItemsInvalidOrAlmostInvalid();
+    List<T> getItemsWithValidDate(LocalDate date);
 
     void save(T t);
 

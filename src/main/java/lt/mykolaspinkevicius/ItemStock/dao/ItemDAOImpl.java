@@ -3,6 +3,7 @@ package lt.mykolaspinkevicius.ItemStock.dao;
 import lt.mykolaspinkevicius.ItemStock.entity.Item;
 import lt.mykolaspinkevicius.ItemStock.exceptions.NoItemFoundException;
 import lt.mykolaspinkevicius.ItemStock.jpa.ItemRepository;
+import lt.mykolaspinkevicius.ItemStock.mappers.MapItemToItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +29,10 @@ public class ItemDAOImpl implements Dao<Item> {
     }
 
     @Override
-    public List<Item> getAllItemsInvalidOrAlmostInvalid() {
+    public List<Item> getItemsWithValidDate(LocalDate date) {
         return repository.findAll().stream()
                 .filter(x -> x.getValidUntil()
-                        .minus(14, ChronoUnit.DAYS)
-                        .compareTo(LocalDate.now()) <= -1).collect(Collectors.toList());
+                        .compareTo(date) >= 0).collect(Collectors.toList());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ItemDAOImpl implements Dao<Item> {
     @Override
     public void update(Item item) {
         repository.findById(item.getId()).ifPresent(x -> {
-            mapItem(x, item);
+            MapItemToItem.mapItemToItem(x, item);
             repository.save(x);
         });
     }
@@ -53,11 +53,4 @@ public class ItemDAOImpl implements Dao<Item> {
         repository.delete(item);
     }
 
-    private void mapItem(Item source, Item updatedSource) {
-        source.setCreated(updatedSource.getCreated());
-        source.setId(updatedSource.getId());
-        source.setQuantity(updatedSource.getQuantity());
-        source.setType(updatedSource.getType());
-        source.setValidUntil(updatedSource.getValidUntil());
-    }
 }

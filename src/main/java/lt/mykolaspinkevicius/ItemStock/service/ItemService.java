@@ -5,6 +5,7 @@ import lt.mykolaspinkevicius.ItemStock.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -12,7 +13,6 @@ public class ItemService {
 
     @Autowired
     Dao<Item> itemDao;
-
 
     public List<Item> getAllItems() {
         return itemDao.getAll();
@@ -22,8 +22,8 @@ public class ItemService {
         return itemDao.getItemById(id);
     }
 
-    public List<Item> getAllItemsInvalidOrAlmostInvalid() {
-        return itemDao.getAllItemsInvalidOrAlmostInvalid();
+    public List<Item> getItemsWithValidDate(LocalDate date) {
+        return itemDao.getItemsWithValidDate(date);
     }
 
     public void save(Item item) {

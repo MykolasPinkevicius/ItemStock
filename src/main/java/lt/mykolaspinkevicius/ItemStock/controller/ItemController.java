@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,4 +27,10 @@ public class ItemController {
     public Item getItemById(@RequestParam Long id) {
         return itemService.getItemById(id);
     }
+
+    @GetMapping("/getItemsWithValidDate")
+    public List<Item> getItemsWithValidDate(@RequestParam LocalDate date) {
+        return itemService.getItemsWithValidDate(date);
+    }
+
 }
