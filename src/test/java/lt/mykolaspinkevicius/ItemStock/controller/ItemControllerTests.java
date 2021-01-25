@@ -7,20 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = ItemStockApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ItemControllerTests {
+class ItemControllerTests {
 
     @Autowired
     TestRestTemplate restTemplate;
@@ -48,19 +48,28 @@ public class ItemControllerTests {
     @Test
     void shouldCreateItem() {
         ResponseEntity<Item> postResponse = postItem();
-        assertNotNull(postResponse);
+        Item getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
+        assertNotNull(getByIdResponse);
     }
 
     @Test
-    void ShouldGetItemsWhenGettingWithValidItemDate() {
+    void shouldGetItemsWhenGettingWithValidItemDate() {
         postItem();
         List getResponse = restTemplate.getForObject(getRootUrl() + "/getItemsWithValidDate?"
-                + "date=" + LocalDate.now().format(DateTimeFormatter.ISO_DATE),List.class);
+                + "date=" + LocalDate.now().format(DateTimeFormatter.ISO_DATE), List.class);
         assertNotNull(getResponse);
     }
 
     @Test
-    void ShouldGetItemsWhenGettingWithTypeAndQuantity() {
+    void shouldUpdateItem() {
+        postItem();
+        restTemplate.put(getRootUrl() + "/updateItem", updateCreatedItem(), Item.class);
+        Item item = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
+        assertEquals("Fake Fake Fake Gold", item.getType());
+    }
+
+    @Test
+    void shouldGetItemsWhenGettingWithTypeAndQuantity() {
         postItem();
         List getResponse = restTemplate.getForObject(getRootUrl() + "/getItemsWithProvidedAvailableQuantityAndType?"
                 + "type=Fake Gold" + "&" + "quantity=15", List.class);
@@ -68,25 +77,17 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldDeleteItemWhenDeletingById() {
+    void shouldDeleteItemWhenDeletingById() {
         postItem();
         Item getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
         assertNotNull(getByIdResponse);
         restTemplate.delete(getRootUrl() + "/deleteItem?id=1");
-        try{
+        try {
             getByIdResponse = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
-        } catch(final HttpClientErrorException e) {
+        } catch (final HttpClientErrorException e) {
             assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
         }
 
-    }
-
-    @Test
-    void ShouldUpdateItem() {
-        postItem();
-        restTemplate.put(getRootUrl() + "/updateItem", updateCreatedItem(), Item.class);
-        Item item = restTemplate.getForObject(getRootUrl() + "/getItemById?id=1", Item.class);
-        assertEquals("Fake Fake Fake Gold", item.getType());
     }
 
     private Item updateCreatedItem() {
