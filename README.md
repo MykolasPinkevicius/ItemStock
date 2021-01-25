@@ -4,6 +4,17 @@ Spring Boot Item stock management system
 
 CRUD methods for Create Read Update Delete
 
+| Service | Parameters | return type |
+| ------- | ---------- | ----------- |
+| getItemById | Long id | Optional < Item > |
+| getAll | ----- | List<Item> |
+| getItemsWithValidDate | LocalDate date | List<Item> |
+| save | Item item | void |
+| update | Item item | void
+| delete | Long id | void |
+| getItemsWithProvidedAvailableQuantityAndType | String type, Long, quantity | List<Item> |
+
+
 Additional methods for getting Items by Valid Date and getting items by type and lower quantity than
 
 # Open API methods 
