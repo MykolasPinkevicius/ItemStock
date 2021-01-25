@@ -34,8 +34,8 @@ public class ItemService {
         itemDao.update(item);
     }
 
-    public void delete(Item item) {
-        itemDao.delete(item);
+    public void delete(Long id) {
+        itemDao.delete(id);
     }
 
 }

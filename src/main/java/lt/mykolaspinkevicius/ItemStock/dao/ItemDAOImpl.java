@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +48,9 @@ public class ItemDAOImpl implements Dao<Item> {
     }
 
     @Override
-    public void delete(Item item) {
-        repository.delete(item);
+    public void delete(Long id) {
+        repository.delete(repository.findById(id).orElseThrow(
+                () -> new NoItemFoundException("No item found while deleting")));
     }
 
 }
