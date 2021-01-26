@@ -17,6 +17,14 @@ Our server, or Localhost:8080 for this instance, following by "/items/" and serv
 | delete | Long id | void |
 | getItemsWithProvidedAvailableQuantityAndType | String type, Long, quantity | List<Item> |
 
+# Item object
+| Item Variable | Variable Type | Additional Info |
+| ------------- | ------------- | --------------- |
+| id | Long | Primary Key |
+| type | String | Product type or name |
+| quantity | Long | --- |
+| created | LocalDate | Date when products crated |
+| validUntil | LocalDate | Products valid until |
 
 Additional methods for getting Items by Valid Date and getting items by type and lower quantity than
 
