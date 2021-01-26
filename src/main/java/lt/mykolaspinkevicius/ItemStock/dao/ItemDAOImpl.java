@@ -18,7 +18,7 @@ public class ItemDAOImpl implements Dao<Item> {
     ItemRepository repository;
 
     @Override
-    public Item getItemById(Long id) {
+    public Item getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NoItemFoundException("No Item Found"));
     }
 
@@ -28,7 +28,7 @@ public class ItemDAOImpl implements Dao<Item> {
     }
 
     @Override
-    public List<Item> getItemsWithValidDate(LocalDate date) {
+    public List<Item> getWithValidDate(LocalDate date) {
         return repository.findAll().stream()
                 .filter(x -> x.getValidUntil()
                         .compareTo(date) >= 0).collect(Collectors.toList());
@@ -54,7 +54,7 @@ public class ItemDAOImpl implements Dao<Item> {
     }
 
     @Override
-    public List<Item> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
+    public List<Item> getWithProvidedAvailableQuantityAndType(String type, Long quantity) {
         return repository.findAll().stream()
                 .filter(x -> type.equals(x.getType()) && x.getQuantity() <= quantity).collect(Collectors.toList());
     }

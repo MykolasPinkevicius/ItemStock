@@ -7,11 +7,11 @@ import java.util.List;
 
 @Repository
 public interface Dao<T> {
-    T getItemById(Long id);
+    T getById(Long id);
 
     List<T> getAll();
 
-    List<T> getItemsWithValidDate(LocalDate date);
+    List<T> getWithValidDate(LocalDate date);
 
     void save(T t);
 
@@ -19,5 +19,5 @@ public interface Dao<T> {
 
     void delete(Long id);
 
-    List<T> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity);
+    List<T> getWithProvidedAvailableQuantityAndType(String type, Long quantity);
 }

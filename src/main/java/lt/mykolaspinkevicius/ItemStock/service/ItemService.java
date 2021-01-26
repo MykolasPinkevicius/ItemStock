@@ -19,11 +19,11 @@ public class ItemService {
     }
 
     public Item getItemById(Long id) {
-        return itemDao.getItemById(id);
+        return itemDao.getById(id);
     }
 
     public List<Item> getItemsWithValidDate(LocalDate date) {
-        return itemDao.getItemsWithValidDate(date);
+        return itemDao.getWithValidDate(date);
     }
 
     public void save(Item item) {
@@ -39,7 +39,7 @@ public class ItemService {
     }
 
     public List<Item> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
-        return itemDao.getItemsWithProvidedAvailableQuantityAndType(type, quantity);
+        return itemDao.getWithProvidedAvailableQuantityAndType(type, quantity);
     }
 
 }

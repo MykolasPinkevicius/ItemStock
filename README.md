@@ -6,6 +6,7 @@ CRUD methods for Create Read Update Delete
 
 # To Access Services
 Our server, or Localhost:8080 for this instance, following by "/items/" and service with parameters or request body
+http://localhost:8080/items/service?parameters
 
 | Service | Parameters | return type |
 | ------- | ---------- | ----------- |
