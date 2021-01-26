@@ -1,9 +1,9 @@
-package lt.mykolaspinkevicius.ItemStock.mappers;
+package lt.mykolaspinkevicius.ItemStock.util;
 
 import lt.mykolaspinkevicius.ItemStock.entity.Item;
 
-public class MapItemToItem {
-    public static void mapItemToItem(Item result, Item source) {
+public class ItemMappingUtil {
+    public static void updateItem(Item result, Item source) {
         result.setCreated(source.getCreated());
         result.setId(source.getId());
         result.setQuantity(source.getQuantity());

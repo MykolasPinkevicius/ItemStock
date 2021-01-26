@@ -3,7 +3,7 @@ package lt.mykolaspinkevicius.ItemStock.dao;
 import lt.mykolaspinkevicius.ItemStock.entity.Item;
 import lt.mykolaspinkevicius.ItemStock.exceptions.NoItemFoundException;
 import lt.mykolaspinkevicius.ItemStock.jpa.ItemRepository;
-import lt.mykolaspinkevicius.ItemStock.mappers.MapItemToItem;
+import lt.mykolaspinkevicius.ItemStock.util.ItemMappingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +42,7 @@ public class ItemDAOImpl implements Dao<Item> {
     @Override
     public void update(Item item) {
         repository.findById(item.getId()).ifPresent(x -> {
-            MapItemToItem.mapItemToItem(x, item);
+            ItemMappingUtil.updateItem(x, item);
             repository.save(x);
         });
     }
