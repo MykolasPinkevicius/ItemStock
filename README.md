@@ -10,11 +10,11 @@ Our server, or Localhost:8080 for this instance, following by "/items/" and serv
 | Service | Parameters | return type |
 | ------- | ---------- | ----------- |
 | getItemById | Long id | Optional < Item > |
-| getAll | ----- | List<Item> |
-| getItemsWithValidDate | LocalDate date | List<Item> |
-| save | Item item | void |
-| update | Item item | void
-| delete | Long id | void |
+| getAllItems | ----- | List<Item> |
+| getItemsWithValidDate | LocalDate date ( pattern="yyyy-MM-dd" ) | List<Item> |
+| addItem | Item item | void |
+| updateItem | Item item | void |
+| deleteItem | Long id | void |
 | getItemsWithProvidedAvailableQuantityAndType | String type, Long, quantity | List<Item> |
 
 # Item object
