@@ -4,6 +4,9 @@ Spring Boot Item stock management system
 
 CRUD methods for Create Read Update Delete
 
+# To Access Services
+Our server, or Localhost:8080 for this instance, following by "/items/" and service with parameters or request body
+
 | Service | Parameters | return type |
 | ------- | ---------- | ----------- |
 | getItemById | Long id | Optional < Item > |
