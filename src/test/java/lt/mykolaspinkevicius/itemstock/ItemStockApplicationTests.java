@@ -1,4 +1,4 @@
-package lt.mykolaspinkevicius.ItemStock;
+package lt.mykolaspinkevicius.itemstock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,7 @@
-package lt.mykolaspinkevicius.ItemStock.controller;
+package lt.mykolaspinkevicius.itemstock.controller;
 
-import lt.mykolaspinkevicius.ItemStock.ItemStockApplication;
-import lt.mykolaspinkevicius.ItemStock.entity.Item;
+import lt.mykolaspinkevicius.itemstock.ItemStockApplication;
+import lt.mykolaspinkevicius.itemstock.entity.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -98,8 +98,7 @@ class ItemControllerTests {
     }
 
     private ResponseEntity<Item> postItem() {
-        ResponseEntity<Item> postResponse = restTemplate.postForEntity(getRootUrl() + "/addItem", createItem(), Item.class);
-        return postResponse;
+        return restTemplate.postForEntity(getRootUrl() + "/addItem", createItem(), Item.class);
     }
 
     private Item createItem() {

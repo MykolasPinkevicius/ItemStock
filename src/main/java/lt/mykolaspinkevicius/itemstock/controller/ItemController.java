@@ -1,7 +1,7 @@
-package lt.mykolaspinkevicius.ItemStock.controller;
+package lt.mykolaspinkevicius.itemstock.controller;
 
-import lt.mykolaspinkevicius.ItemStock.entity.Item;
-import lt.mykolaspinkevicius.ItemStock.service.ItemService;
+import lt.mykolaspinkevicius.itemstock.entity.Item;
+import lt.mykolaspinkevicius.itemstock.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/items")
 public class ItemController {
 
+    public static final String ITEM_DATE_FORMAT = "yyyy-MM-dd";
     @Autowired
     private ItemService itemService;
 
@@ -27,7 +28,7 @@ public class ItemController {
     }
 
     @GetMapping("/getItemsWithValidDate")
-    public List<Item> getItemsWithValidDate(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date) {
+    public List<Item> getItemsWithValidDate(@RequestParam @DateTimeFormat(pattern=ITEM_DATE_FORMAT) LocalDate date) {
         return itemService.getItemsWithValidDate(date);
     }
 

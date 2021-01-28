@@ -1,4 +1,4 @@
-package lt.mykolaspinkevicius.ItemStock.entity;
+package lt.mykolaspinkevicius.itemstock.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
