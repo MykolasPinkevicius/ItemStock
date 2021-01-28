@@ -2,18 +2,17 @@ package lt.mykolaspinkevicius.itemstock.service;
 
 import lt.mykolaspinkevicius.itemstock.entity.Item;
 import lt.mykolaspinkevicius.itemstock.exceptions.NoItemFoundException;
-import lt.mykolaspinkevicius.itemstock.jpa.ItemRepository;
+import lt.mykolaspinkevicius.itemstock.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
 
-    public static final String NOT_FOUND_BY_USING_GET_BY_ID = "Item isn't founded while trying to get it by id";
+    private static final String NOT_FOUND_BY_USING_GET_BY_ID = "Item isn't founded while trying to get it by id";
 
     @Autowired
     private ItemRepository itemRepository;
@@ -27,9 +26,7 @@ public class ItemService {
     }
 
     public List<Item> getItemsWithValidDate(LocalDate date) {
-        return itemRepository.findAll().stream()
-                .filter(item -> item.getValidUntil().isBefore(date))
-                .collect(Collectors.toList());
+        return itemRepository.findWithValidDate(date);
     }
 
     public void save(Item item) {
@@ -45,12 +42,7 @@ public class ItemService {
     }
 
     public List<Item> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
-        return itemRepository.findAll().stream()
-                .filter(item -> isProvidedTypeAndQuantity(type, quantity, item)).collect(Collectors.toList());
-    }
-
-    private boolean isProvidedTypeAndQuantity(String type, Long quantity, Item item) {
-        return type.equals(item.getType()) && item.getQuantity() <= quantity;
+        return itemRepository.findWithProvidedAvailableQuantityAndType(type, quantity);
     }
 
 }
