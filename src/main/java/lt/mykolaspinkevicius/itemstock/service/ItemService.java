@@ -1,5 +1,7 @@
 package lt.mykolaspinkevicius.itemstock.service;
 
+import lt.mykolaspinkevicius.itemstock.builder.ItemDTOBuilder;
+import lt.mykolaspinkevicius.itemstock.dto.ItemDTO;
 import lt.mykolaspinkevicius.itemstock.entity.Item;
 import lt.mykolaspinkevicius.itemstock.exceptions.NoItemFoundException;
 import lt.mykolaspinkevicius.itemstock.repository.ItemRepository;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -41,8 +44,9 @@ public class ItemService {
         itemRepository.delete(itemRepository.findById(id).orElseThrow(() -> new NoItemFoundException(NOT_FOUND_BY_USING_GET_BY_ID)));
     }
 
-    public List<Item> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
-        return itemRepository.findWithProvidedAvailableQuantityAndType(type, quantity);
+    public List<ItemDTO> getItemsWithProvidedAvailableQuantityAndType(String type, Long quantity) {
+        return itemRepository.findWithProvidedAvailableQuantityAndType(type, quantity)
+                .stream().map(item -> new ItemDTOBuilder().setItemDTO(item).build()).collect(Collectors.toList());
     }
 
 }
