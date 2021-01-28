@@ -2,7 +2,6 @@ package lt.mykolaspinkevicius.itemstock.repository;
 
 import lt.mykolaspinkevicius.itemstock.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificationExecutor<Item> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("select i from Item i where i.validUntil < ?1")
     List<Item> findWithValidDate(LocalDate validUntil);
