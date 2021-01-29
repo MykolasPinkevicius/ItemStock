@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    @Query("select i from Item i where i.validUntil < ?1")
+    @Query("select i from Item i where i.validUntil < ?1 and i.quantity > 0")
     List<Item> findWithValidDate(LocalDate validUntil);
 
     @Query("select i from Item i where i.type = ?1 and i.quantity < ?2")
